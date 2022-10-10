@@ -8,9 +8,11 @@ import android.content.Context;
 import android.net.http.SslError;
 import android.os.Build;
 import android.os.Handler;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.ConsoleMessage;
 import android.webkit.CookieManager;
 import android.webkit.GeolocationPermissions;
 import android.webkit.PermissionRequest;
@@ -267,6 +269,18 @@ class WebviewManager {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     request.grant(request.getResources());
                 }
+            }
+
+            @Override
+            public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
+                Map<String, Object> obj = new HashMap<>();
+                obj.put("uuid", activity.uuid);
+                obj.put("sourceURL", consoleMessage.sourceId());
+                obj.put("lineNumber", consoleMessage.lineNumber());
+                obj.put("message", consoleMessage.message());
+                obj.put("messageLevel", consoleMessage.messageLevel().toString());
+                FlutterWebviewPlugin.channel.invokeMethod("onConsoleMessage", obj);
+                return true;
             }
 
             public void onGeolocationPermissionsShowPrompt(String origin, GeolocationPermissions.Callback callback) {

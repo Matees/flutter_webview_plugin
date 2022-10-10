@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_webview_plugin/src/javascript_channel.dart';
 
+import './enums/console_message.dart';
 import 'javascript_message.dart';
 
 const _kChannel = 'flutter_webview_plugin';
@@ -40,6 +41,7 @@ class FlutterWebviewPlugin {
   final _onScrollXChanged = StreamController<double>.broadcast();
   final _onScrollYChanged = StreamController<double>.broadcast();
   final _onProgressChanged = new StreamController<double>.broadcast();
+  final _onConsoleMessage = new StreamController<ConsoleMessage>.broadcast();
   final _onHttpError = StreamController<WebViewHttpError>.broadcast();
   final _onPostMessage = StreamController<JavascriptMessage>.broadcast();
 
@@ -65,6 +67,9 @@ class FlutterWebviewPlugin {
         break;
       case 'onProgressChanged':
         _onProgressChanged.add(call.arguments['progress']);
+        break;
+      case 'onConsoleMessage':
+        _onConsoleMessage.add(call.arguments['message']);
         break;
       case 'onState':
         _onStateChanged.add(
@@ -100,6 +105,9 @@ class FlutterWebviewPlugin {
 
   /// Listening web view loading progress estimation, value between 0.0 and 1.0
   Stream<double> get onProgressChanged => _onProgressChanged.stream;
+
+  /// Listening web view console message
+  Stream<ConsoleMessage> get onConsoleMessage => _onConsoleMessage.stream;
 
   /// Listening web view y position scroll change
   Stream<double> get onScrollYChanged => _onScrollYChanged.stream;
@@ -284,6 +292,7 @@ class FlutterWebviewPlugin {
     _onUrlChanged.close();
     _onStateChanged.close();
     _onProgressChanged.close();
+    _onConsoleMessage.close();
     _onScrollXChanged.close();
     _onScrollYChanged.close();
     _onHttpError.close();
