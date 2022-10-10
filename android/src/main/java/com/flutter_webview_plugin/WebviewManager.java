@@ -276,7 +276,7 @@ class WebviewManager {
                 Map<String, Object> obj = new HashMap<>();
                 obj.put("message", consoleMessage.message());
                 obj.put("messageLevel", consoleMessage.messageLevel().ordinal());
-                channel.invokeMethod("onConsoleMessage", obj);
+                FlutterWebviewPlugin.channel.invokeMethod("onConsoleMessage", obj);
                 return true;
             }
 
