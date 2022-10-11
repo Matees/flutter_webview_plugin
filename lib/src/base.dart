@@ -5,10 +5,29 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_webview_plugin/src/javascript_channel.dart';
 
-import './enums/console_message.dart';
 import 'javascript_message.dart';
 
 const _kChannel = 'flutter_webview_plugin';
+
+enum ConsoleMessageLevel { DEBUG, ERROR, LOG, TIP, WARNING }
+
+///Public class representing a JavaScript console message from WebCore.
+///This could be a issued by a call to one of the console logging functions (e.g. console.log('...')) or a JavaScript error on the page.
+class ConsoleMessage {
+  ConsoleMessage(
+      {this.message = '', this.messageLevel = ConsoleMessageLevel.LOG});
+
+  factory ConsoleMessage.fromJson(Map<String, dynamic> json) {
+    return ConsoleMessage(
+      message: json['message'],
+      messageLevel: ConsoleMessageLevel.values
+          .firstWhere((level) => level.name == json['messageLevel']),
+    );
+  }
+
+  final String message;
+  final ConsoleMessageLevel messageLevel;
+}
 
 // TODO: more general state for iOS/android
 enum WebViewState { shouldStart, startLoad, finishLoad, abortLoad }
@@ -69,7 +88,8 @@ class FlutterWebviewPlugin {
         _onProgressChanged.add(call.arguments['progress']);
         break;
       case 'onConsoleMessage':
-        _onConsoleMessage.add(call.arguments['message']);
+        _onConsoleMessage.add(
+            ConsoleMessage.fromJson(Map<String, dynamic>.from(call.arguments)));
         break;
       case 'onState':
         _onStateChanged.add(
