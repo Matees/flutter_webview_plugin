@@ -444,7 +444,7 @@ class WebviewManager {
         }
 
         if (hidden) {
-            webView.setVisibility(View.GONE);
+            webView.setVisibility(View.INVISIBLE);
         }
 
         if (clearCookies) {
@@ -558,7 +558,7 @@ class WebviewManager {
 
     void hide(MethodCall call, MethodChannel.Result result) {
         if (webView != null) {
-            webView.setVisibility(View.GONE);
+            webView.setVisibility(View.INVISIBLE);
         }
     }
 
