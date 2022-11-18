@@ -20,6 +20,7 @@ import android.webkit.SslErrorHandler;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
+import android.webkit.WebStorage;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
 import android.provider.MediaStore;
@@ -367,6 +368,7 @@ class WebviewManager {
     }
 
     private void clearCache() {
+        WebStorage.getInstance().deleteAllData();
         webView.clearCache(true);
         webView.clearFormData();
     }
@@ -553,6 +555,7 @@ class WebviewManager {
      * Clears cache
      */
     void cleanCache(){
+        WebStorage.getInstance().deleteAllData();
         webView.clearCache(true);
     }
 

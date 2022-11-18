@@ -137,6 +137,10 @@ static NSString *const CHANNEL_NAME = @"flutter_webview_plugin";
     WKWebViewConfiguration* configuration = [[WKWebViewConfiguration alloc] init];
     configuration.userContentController = userContentController;
 
+    if (clearCache != (id)[NSNull null] && [clearCache boolValue]) {
+      configuration.websiteDataStore = [WKWebsiteDataStore nonPersistentDataStore];
+    }
+
     if (allowsInlineMediaPlayback != (id)[NSNull null]) {
       configuration.allowsInlineMediaPlayback = [allowsInlineMediaPlayback boolValue];
     }
