@@ -286,6 +286,7 @@ class WebviewManager {
             }
         });
         registerJavaScriptChannelNames(channelNames);
+        webView.getSettings().setTextZoom(100);
     }
 
     private Uri getOutputFilename(String intentType) {
