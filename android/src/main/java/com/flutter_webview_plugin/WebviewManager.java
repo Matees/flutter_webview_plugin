@@ -286,7 +286,6 @@ class WebviewManager {
             }
         });
         registerJavaScriptChannelNames(channelNames);
-        webView.getSettings().setTextZoom(100);
     }
 
     private Uri getOutputFilename(String intentType) {
@@ -420,6 +419,7 @@ class WebviewManager {
         webView.getSettings().setAllowUniversalAccessFromFileURLs(allowFileURLs);
 
         webView.getSettings().setUseWideViewPort(useWideViewPort);
+        webView.getSettings().setTextZoom(100);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             webView.getSettings().setMediaPlaybackRequiresUserGesture(mediaPlaybackRequiresUserGesture);
